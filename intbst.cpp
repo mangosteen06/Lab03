@@ -225,5 +225,52 @@ int IntBST::getSuccessor(int value) const{
 // deletes the Node containing the given value from the tree
 // returns true if the node exist and was deleted or false if the node does not exist
 bool IntBST::remove(int value){
-    return false; // REPLACE THIS NON-SOLUTION
-}
+    if (!contains(value)) {
+        return false; 
+    }
+    Node* b;
+    Node* p = nullptr;
+    Node* n = getNodeFor(value,root);
+    Node * iter = root;
+    while (iter != nullptr && iter->info != value) {
+        p=iter;
+        if(value <iter->info){
+            iter = iter->left;
+        }else if(value >iter->info){
+            iter = iter->right;
+        }
+    }
+     if (n->left != nullptr && n->right != nullptr) {
+        Node* New = getSuccessorNode(value);
+        while (iter != nullptr && iter->info != New->info) {
+            p=iter ;
+            if (New->info < iter->info) {
+                iter = iter->left;
+            } else {
+                iter = iter->right;
+            }
+    }
+        n->info = New->info;
+        n = New;
+    }
+
+    if(n->left != nullptr){
+         b= n->left;
+    }else{
+        b= n->right; 
+    }
+    if (p == nullptr) {
+        root = b;
+    } else if (p->left == n) {
+        p->left = b;
+    } else {
+        p->right = b;
+    }
+
+    delete n;
+    return true;
+
+    }
+
+    
+
